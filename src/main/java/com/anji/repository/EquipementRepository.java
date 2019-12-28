@@ -1,5 +1,9 @@
 package com.anji.repository;
 
-public class EquipementRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.anji.entity.Equipement;
+
+public interface EquipementRepository extends JpaRepository<Equipement, Long> {
 
 }
