@@ -1,9 +1,13 @@
 package com.anji.entity;
 
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.util.Date;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.deser.std.DateDeserializers.DateDeserializer;
 
 @Entity
 public class Evenement implements Serializable {
@@ -13,23 +17,20 @@ public class Evenement implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 	private String titre;
-	private ZonedDateTime date;
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private Date date;
 	private boolean isValid;
-	@OneToOne
-	@JoinColumn(name = "id_evenement", referencedColumnName = "id")
-	private Reservation reservation;
 	
 	public Evenement() {
 		super();
 	}
 
-	public Evenement(Long id, String titre, ZonedDateTime date, boolean isValid, Reservation reservation) {
+	public Evenement(Long id, String titre, Date date, boolean isValid) {
 		super();
 		this.id = id;
 		this.titre = titre;
 		this.date = date;
 		this.isValid = isValid;
-		this.reservation = reservation;
 	}
 
 	public Long getId() {
@@ -48,11 +49,12 @@ public class Evenement implements Serializable {
 		this.titre = titre;
 	}
 
-	public ZonedDateTime getDate() {
+	@JsonDeserialize(using = DateDeserializer.class)
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(ZonedDateTime date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
@@ -64,12 +66,5 @@ public class Evenement implements Serializable {
 		this.isValid = isValid;
 	}
 
-	public Reservation getReservation() {
-		return reservation;
-	}
 
-	public void setReservation(Reservation reservation) {
-		this.reservation = reservation;
-	}
-	
 }
