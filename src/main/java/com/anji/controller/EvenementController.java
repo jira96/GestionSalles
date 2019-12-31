@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.anji.entity.Evenement;
 import com.anji.service.EvenementService;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.deser.std.DateDeserializers.DateDeserializer;
 
 @RestController
 public class EvenementController {
@@ -27,6 +29,7 @@ public class EvenementController {
 	}
 	
 	@PostMapping("/evenements/add")
+	@JsonDeserialize(using = DateDeserializer.class)
 	public Evenement addOrUpdateEvenement(@Valid @RequestBody Evenement event) {
 		return eventService.addOrUpdateEvenement(event);
 	}
@@ -36,5 +39,9 @@ public class EvenementController {
 		eventService.deleteEventById(id);
 	}
 	
+	@PostMapping("/evenements/valider/{Id}")
+	public void valider(@PathVariable("Id") Long id) {
+		eventService.valider(id);
+	}
 	
 }
